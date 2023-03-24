@@ -5,12 +5,11 @@ import { FC } from 'react'
 import Code from './Code'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/Tabs'
 import SimpleBar from 'simplebar-react'
-import 'simplebar-react/dist/simplebar.min.css'
 
 const DocumentationTabs: FC = () => {
     return (
-        <Tabs>
-            <TabsList defaultValue={'nodejs'} className='max-w-2xl w-full'>
+        <Tabs defaultValue={'nodejs'} className='max-w-2xl w-full'>
+            <TabsList>
                 <TabsTrigger value='nodejs'>NodeJS</TabsTrigger>
                 <TabsTrigger value='python'>Python</TabsTrigger>
             </TabsList>
