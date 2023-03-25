@@ -13,10 +13,10 @@ const SignInButton: FC<SignInButtonProps> = ({ }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const signInWithGoogle = async () => {
-        setIsLoading(true)
 
         try {
-            await signIn('google')
+            setIsLoading(true)
+            await signIn('google', { callbackUrl: '/dashboard' })
         } catch (error) {
             toast({
                 title: 'Error signing in',

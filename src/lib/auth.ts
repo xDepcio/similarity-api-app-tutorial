@@ -3,16 +3,16 @@ import { db } from "./db";
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
 
-function getGoogleCredentails() {
+function getGoogleCredentials(): { clientId: string; clientSecret: string } {
     const clientId = process.env.GOOGLE_CLIENT_ID
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 
     if (!clientId || clientId.length === 0) {
-        throw new Error('no google client id')
+        throw new Error('Missing GOOGLE_CLIENT_ID')
     }
 
     if (!clientSecret || clientSecret.length === 0) {
-        throw new Error('no google client secret')
+        throw new Error('Missing GOOGLE_CLIENT_SECRET')
     }
 
     return { clientId, clientSecret }
@@ -28,12 +28,12 @@ export const authOptions: NextAuthOptions = {
     },
     providers: [
         GoogleProvider({
-            clientId: getGoogleCredentails().clientId,
-            clientSecret: getGoogleCredentails().clientSecret
+            clientId: getGoogleCredentials().clientId,
+            clientSecret: getGoogleCredentials().clientSecret
         })
     ],
     callbacks: {
-        session({ token, session }) {
+        async session({ token, session }) {
             if (token) {
                 session.user.id = token.id
                 session.user.name = token.name
@@ -43,7 +43,26 @@ export const authOptions: NextAuthOptions = {
             return session
         },
         async jwt({ token, user }) {
-            const dbUser = await db.
-        }
+            const dbUser = await db.user.findFirst({
+                where: {
+                    email: token.email
+                }
+            })
+
+            if (!dbUser) {
+                token.id = user!.id
+                return token
+            }
+
+            return {
+                id: dbUser.id,
+                name: dbUser.name,
+                email: dbUser.email,
+                picture: dbUser.image
+            }
+        },
+        // redirect({ baseUrl }) {
+        //     return `${baseUrl}/dashboard`
+        // }
     }
 }
