@@ -22,7 +22,7 @@ const headingVariants = cva(
 interface LargeHeadingProps extends HTMLAttributes<HTMLHeadingElement>,
     VariantProps<typeof headingVariants> { }
 
-const Paragraph = forwardRef<HTMLHeadingElement, LargeHeadingProps>(({
+const LargeHeading = forwardRef<HTMLHeadingElement, LargeHeadingProps>(({
     className, size, children, ...props
 }, ref) => {
     return <h1
@@ -33,6 +33,6 @@ const Paragraph = forwardRef<HTMLHeadingElement, LargeHeadingProps>(({
     </h1>
 })
 
-Paragraph.displayName = 'Paragraph'
+LargeHeading.displayName = 'LargeHeading'
 
-export default Paragraph;
+export default LargeHeading;
