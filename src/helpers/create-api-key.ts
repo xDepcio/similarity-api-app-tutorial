@@ -1,7 +1,7 @@
 import { CreateApiData } from "@/types/api"
 
 export async function createApiKey() {
-    const res = await fetch('/api/api-key/create')
+    const res = await fetch('/api/api-key/create', { method: 'POST' }) // U białasa na filmie było GET request, ale jak dla mnie nie ma te senus, więc dałem POST
     const data = (await res.json()) as CreateApiData
 
     if (data.error || !data.createdApiKey) {
